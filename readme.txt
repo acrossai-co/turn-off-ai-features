@@ -4,7 +4,7 @@ Tags:              ai, turn-off, wp-supports-ai, disable-ai
 Requires at least: 7.0
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        0.0.7
+Stable tag:        0.0.8
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,7 +63,7 @@ just not configuring connectors.
 Here's why it matters:
 
 wp_supports_ai() provides:
-* WP_SUPPORTS_AI constant in wp-config.php for server-level control
+* WP_AI_SUPPORT constant in wp-config.php for server-level control
 * A filter hook for programmatic control at any point in the stack
 * A guarantee that works independently of connector configuration
 
@@ -77,9 +77,9 @@ The difference is between hoping AI stays off vs. guaranteeing it stays off.
 
 Yes. WordPress 7.0 provides two built-in mechanisms you can use directly:
 
-1. WP_SUPPORTS_AI constant in wp-config.php:
+1. WP_AI_SUPPORT constant in wp-config.php:
 
-   define( 'WP_SUPPORTS_AI', false );
+   define( 'WP_AI_SUPPORT', false );
 
    Add this line to your wp-config.php file to disable AI at the server level,
    before any plugin or theme code runs.
@@ -115,13 +115,13 @@ or wp_ai_client_prompt() will be turned off.
 This plugin runs at priority 1000, which is very high. Most plugins hook in at the
 default priority of 10. This means if another plugin tries to force AI on, this
 plugin will override it. If you need an even higher priority, use the
-WP_SUPPORTS_AI constant in wp-config.php — it runs before any plugin code.
+WP_AI_SUPPORT constant in wp-config.php — it runs before any plugin code.
 
 = Does this work on WordPress Multisite? =
 
 The plugin controls AI on a per-site basis. Each site in a network manages its own
 setting via Settings > General. If you need to disable AI across all sites in a
-network at once, use the WP_SUPPORTS_AI constant in wp-config.php, which applies
+network at once, use the WP_AI_SUPPORT constant in wp-config.php, which applies
 network-wide.
 
 = What happens if I deactivate the plugin? =
@@ -141,22 +141,29 @@ network requests or processing.
 
 Yes, the settings UI and WP-CLI commands work on any standard WordPress install.
 However, on some managed platforms, wp-config.php may not be directly editable —
-in that case, use this plugin's toggle instead of the WP_SUPPORTS_AI constant.
+in that case, use this plugin's toggle instead of the WP_AI_SUPPORT constant.
 
 = Do I need to keep the plugin active to keep AI turned off? =
 
 Yes, if you're relying on the plugin's UI toggle. The filter only runs while the
 plugin is active. If you want a persistent, plugin-independent solution, add
-define( 'WP_SUPPORTS_AI', false ); to your wp-config.php instead.
+define( 'WP_AI_SUPPORT', false ); to your wp-config.php instead.
 
 = Is this plugin useful for GDPR or data privacy compliance? =
 
 Yes. Disabling AI at the infrastructure level ensures that no user data is sent to
 AI connectors or third-party AI providers. For compliance-sensitive environments,
-combining this plugin with the WP_SUPPORTS_AI constant gives you an auditable,
+combining this plugin with the WP_AI_SUPPORT constant gives you an auditable,
 two-layer guarantee that AI processing is off.
 
 == Changelog ==
+
+= 0.0.8 =
+* Added: PHPUnit test suite with GitHub Actions CI — automated testing across PHP 7.4–8.3
+* Added: WordPress Coding Standards (PHPCS) check in CI required before merging PRs
+* Added: "Hide Connectors Page" option in Settings > General — removes the Connectors admin page from the menu when AI is turned off
+* Changed: Plugin now defines WP_AI_SUPPORT constant at load time in addition to the wp_supports_ai filter, matching the WordPress 7.0 native AI disable mechanism
+* Fixed: Updated all documentation to use the correct WP_AI_SUPPORT constant name (previously incorrectly referenced as WP_SUPPORTS_AI)
 
 = 0.0.7 =
 * Added WordPress.org plugin banner (772x250) and retina banner (1544x500)
