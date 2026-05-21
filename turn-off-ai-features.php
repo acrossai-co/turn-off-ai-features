@@ -19,12 +19,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Hooks into wp_supports_ai to turn off AI when the option is enabled.
+ * Defines WP_AI_SUPPORT as false at load time when the option is enabled.
+ * WP core checks this constant before the wp_supports_ai filter.
+ */
+if ( '1' === get_option( 'toaif_disable_ai', '0' ) && ! defined( 'WP_AI_SUPPORT' ) ) {
+	define( 'WP_AI_SUPPORT', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+}
+
+/**
+ * Hooks into wp_supports_ai as a filter-level fallback when the option is enabled.
  */
 add_filter(
 	'wp_supports_ai',
 	static function ( $supported ) {
-		if ( get_option( 'toaif_disable_ai', '0' ) === '1' ) {
+		if ( '1' === get_option( 'toaif_disable_ai', '0' ) ) {
 			return false;
 		}
 		return $supported;
