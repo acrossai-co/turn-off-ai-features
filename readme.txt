@@ -4,7 +4,7 @@ Tags:              ai, turn-off, wp-supports-ai, disable-ai
 Requires at least: 7.0
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        0.0.8
+Stable tag:        0.0.9
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,6 +157,9 @@ combining this plugin with the WP_AI_SUPPORT constant gives you an auditable,
 two-layer guarantee that AI processing is off.
 
 == Changelog ==
+
+= 0.0.9 =
+* Fixed: Exclude dev-only files from WordPress.org release (bin/, tests/, composer.json, phpcs.xml.dist, phpunit.xml.dist, DEPLOYMENT_GUIDE.md, README.md) via .distignore
 
 = 0.0.8 =
 * Added: PHPUnit test suite with GitHub Actions CI — automated testing across PHP 7.4–8.3
