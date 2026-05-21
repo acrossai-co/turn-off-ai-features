@@ -137,7 +137,7 @@ add_action(
 			'toaif-admin-settings',
 			plugins_url( 'assets/js/admin-settings.js', __FILE__ ),
 			array(),
-			'0.0.7',
+			'0.0.8',
 			true
 		);
 	}
