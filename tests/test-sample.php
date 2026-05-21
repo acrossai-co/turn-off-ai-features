@@ -11,10 +11,11 @@
 class Test_Toaif_Plugin extends WP_UnitTestCase {
 
 	/**
-	 * Reset option after each test.
+	 * Reset options after each test.
 	 */
 	public function tear_down() {
 		delete_option( 'toaif_disable_ai' );
+		delete_option( 'toaif_hide_connectors' );
 		parent::tear_down();
 	}
 
@@ -42,5 +43,53 @@ class Test_Toaif_Plugin extends WP_UnitTestCase {
 	public function test_wp_supports_ai_returns_false_when_option_enabled() {
 		update_option( 'toaif_disable_ai', '1' );
 		$this->assertFalse( apply_filters( 'wp_supports_ai', true ) );
+	}
+
+	/**
+	 * Connectors submenu is removed when both options are on.
+	 */
+	public function test_connectors_menu_hidden_when_both_options_on() {
+		global $submenu;
+		$submenu['options-general.php']   = array();
+		$submenu['options-general.php'][] = array( 'Connectors', 'manage_options', 'options-connectors.php' );
+
+		update_option( 'toaif_disable_ai', '1' );
+		update_option( 'toaif_hide_connectors', '1' );
+		do_action( 'admin_menu' );
+
+		$slugs = wp_list_pluck( $submenu['options-general.php'], 2 );
+		$this->assertNotContains( 'options-connectors.php', $slugs );
+	}
+
+	/**
+	 * Connectors submenu stays when only the sub-toggle is on (main is off).
+	 */
+	public function test_connectors_menu_visible_when_main_toggle_off() {
+		global $submenu;
+		$submenu['options-general.php']   = array();
+		$submenu['options-general.php'][] = array( 'Connectors', 'manage_options', 'options-connectors.php' );
+
+		update_option( 'toaif_disable_ai', '0' );
+		update_option( 'toaif_hide_connectors', '1' );
+		do_action( 'admin_menu' );
+
+		$slugs = wp_list_pluck( $submenu['options-general.php'], 2 );
+		$this->assertContains( 'options-connectors.php', $slugs );
+	}
+
+	/**
+	 * Connectors submenu stays when only the main toggle is on (sub is off).
+	 */
+	public function test_connectors_menu_visible_when_sub_toggle_off() {
+		global $submenu;
+		$submenu['options-general.php']   = array();
+		$submenu['options-general.php'][] = array( 'Connectors', 'manage_options', 'options-connectors.php' );
+
+		update_option( 'toaif_disable_ai', '1' );
+		update_option( 'toaif_hide_connectors', '0' );
+		do_action( 'admin_menu' );
+
+		$slugs = wp_list_pluck( $submenu['options-general.php'], 2 );
+		$this->assertContains( 'options-connectors.php', $slugs );
 	}
 }
