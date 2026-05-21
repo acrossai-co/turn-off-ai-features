@@ -165,7 +165,7 @@ add_action(
 	static function () {
 		if ( '1' === get_option( 'toaif_disable_ai', '0' )
 			&& '1' === get_option( 'toaif_hide_connectors', '0' ) ) {
-			wp_safe_redirect( admin_url() );
+			wp_safe_redirect( admin_url( 'options-general.php#toaif_disable_ai' ) );
 			exit;
 		}
 	}
