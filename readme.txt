@@ -4,7 +4,7 @@ Tags:              ai, turn-off, wp-supports-ai, disable-ai
 Requires at least: 7.0
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        0.0.7
+Stable tag:        0.0.8
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,6 +157,13 @@ combining this plugin with the WP_AI_SUPPORT constant gives you an auditable,
 two-layer guarantee that AI processing is off.
 
 == Changelog ==
+
+= 0.0.8 =
+* Added: PHPUnit test suite with GitHub Actions CI — automated testing across PHP 7.4–8.3
+* Added: WordPress Coding Standards (PHPCS) check in CI required before merging PRs
+* Added: "Hide Connectors Page" option in Settings > General — removes the Connectors admin page from the menu when AI is turned off
+* Changed: Plugin now defines WP_AI_SUPPORT constant at load time in addition to the wp_supports_ai filter, matching the WordPress 7.0 native AI disable mechanism
+* Fixed: Updated all documentation to use the correct WP_AI_SUPPORT constant name (previously incorrectly referenced as WP_SUPPORTS_AI)
 
 = 0.0.7 =
 * Added WordPress.org plugin banner (772x250) and retina banner (1544x500)
