@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<ruleset name="TurnOffAIFeatures">
+    <description>WPCS + PHPCompatibility ruleset for turn-off-ai-features.</description>
+
+    <file>.</file>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>index.php</exclude-pattern>
+
+    <arg name="extensions" value="php"/>
+    <arg name="colors"/>
+    <arg value="ps"/>
+    <arg name="parallel" value="8"/>
+
+    <!-- WordPress full ruleset (Core + Docs + Extra). -->
+    <rule ref="WordPress"/>
+
+    <!-- Project prefix. -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array">
+                <element value="toaif"/>
+                <element value="TOAIF"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Text domain. -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="turn-off-ai-features"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Minimum supported WP / PHP. -->
+    <config name="minimum_supported_wp_version" value="6.0"/>
+    <config name="testVersion" value="7.4-"/>
+    <rule ref="PHPCompatibilityWP"/>
+
+    <!-- Relax filename and prefix rules in tests. -->
+    <rule ref="WordPress.Files.FileName">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+
+    <!--
+        The main plugin file must remain named turn-off-ai-features.php (WordPress requirement),
+        but it contains a WP-CLI class — suppress the class-filename and mixed-declarations
+        sniffs for this file only.
+    -->
+    <rule ref="WordPress.Files.FileName.InvalidClassFileName">
+        <exclude-pattern>turn-off-ai-features.php</exclude-pattern>
+    </rule>
+    <rule ref="Universal.Files.SeparateFunctionsFromOO">
+        <exclude-pattern>turn-off-ai-features.php</exclude-pattern>
+    </rule>
+</ruleset>
