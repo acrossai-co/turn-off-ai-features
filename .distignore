@@ -1,0 +1,13 @@
+.claude
+.distignore
+.git
+.gitignore
+.github
+bin
+composer.json
+composer.lock
+DEPLOYMENT_GUIDE.md
+phpcs.xml.dist
+phpunit.xml.dist
+README.md
+tests
