@@ -4,6 +4,10 @@ Adds an option to the General Settings page to turn off AI features in WordPress
 
 ---
 
+## Demo
+
+[![Demo Video](https://img.youtube.com/vi/ZKoHZ3IbMnU/0.jpg)](https://youtu.be/ZKoHZ3IbMnU)
+
 ## Description
 
 Turn Off AI Features lets you control AI functionality in WordPress without touching code. It hooks into the `wp_supports_ai` filter at priority 1000 and returns `false` when the option is enabled.
