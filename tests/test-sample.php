@@ -46,6 +46,31 @@ class Test_Toaif_Plugin extends WP_UnitTestCase {
 	}
 
 	/**
+	 * WP_AI_SUPPORT constant must not be defined when the option is off at load time.
+	 * The constant is set once at plugin load — this test bootstraps with option='0'.
+	 */
+	public function test_wp_ai_support_constant_not_defined_when_option_off_at_load() {
+		$this->assertFalse( defined( 'WP_AI_SUPPORT' ) );
+	}
+
+	/**
+	 * The wp_supports_ai filter (filter-level fallback) must return false with option on.
+	 * Tests the fallback path — covers environments where the constant was not set at load.
+	 */
+	public function test_wp_supports_ai_filter_returns_false_when_option_on() {
+		update_option( 'toaif_disable_ai', '1' );
+		$this->assertFalse( (bool) apply_filters( 'wp_supports_ai', true ) );
+	}
+
+	/**
+	 * The wp_supports_ai filter must pass through when the option is off.
+	 */
+	public function test_wp_supports_ai_filter_passes_through_when_option_off() {
+		update_option( 'toaif_disable_ai', '0' );
+		$this->assertTrue( (bool) apply_filters( 'wp_supports_ai', true ) );
+	}
+
+	/**
 	 * Connectors submenu is removed when both options are on.
 	 */
 	public function test_connectors_menu_hidden_when_both_options_on() {
