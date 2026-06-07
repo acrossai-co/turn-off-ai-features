@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Turn Off AI Features
  * Description: Adds an option to the General Settings page to turn off AI features in WordPress.
- * Version:     0.0.9
+ * Version:     1.0.0
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:      raftaar1191
@@ -137,7 +137,7 @@ add_action(
 			'toaif-admin-settings',
 			plugins_url( 'assets/js/admin-settings.js', __FILE__ ),
 			array(),
-			'0.0.9',
+			'1.0.0',
 			true
 		);
 	}
