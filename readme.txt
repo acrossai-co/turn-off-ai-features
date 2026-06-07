@@ -1,22 +1,20 @@
 === Turn Off AI Features ===
 Contributors:      raftaar1191
-Tags:              ai, turn-off, wp-supports-ai, disable-ai
+Tags:              disable-ai, turn-off, ai, wp-supports-ai, kill-switch
 Requires at least: 7.0
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        0.0.9
+Stable tag:        1.0.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-Adds an option to the General Settings page to turn off AI features in WordPress.
+A simple on/off switch for all AI features in WordPress 7.0. One checkbox in Settings > General disables AI site-wide — no code or config file edits needed.
 
 == Description ==
 
+https://www.youtube.com/watch?v=ZKoHZ3IbMnU
+
 Turn Off AI Features lets you control AI functionality in WordPress without touching code. It hooks into the wp_supports_ai filter at priority 1000 and returns false when the option is enabled.
-
-== Demo ==
-
-[youtube https://youtu.be/ZKoHZ3IbMnU]
 
 Features:
 
@@ -160,7 +158,53 @@ AI connectors or third-party AI providers. For compliance-sensitive environments
 combining this plugin with the WP_AI_SUPPORT constant gives you an auditable,
 two-layer guarantee that AI processing is off.
 
+= Which plugin-specific filters does this plugin apply? =
+
+When "Turn off AI features" is enabled, this plugin applies the following filters
+in addition to the core wp_supports_ai filter:
+
+* wp_supports_ai — Core WordPress 7.0 filter; forced to false at priority 1000.
+* jetpack_ai_enabled — Disables Jetpack AI Assistant and all Jetpack AI-powered features.
+* wpforms_disable_ai_features — Disables the built-in AI features inside WPForms.
+
+More plugin-specific filters may be added in future releases as the WordPress
+ecosystem adopts ai-disable hooks.
+
+= What if I want to disable AI globally but keep one plugin's AI active? =
+
+You can selectively re-enable a specific plugin's AI by removing the filter this
+plugin added. Because this plugin adds its filters during the file-load phase
+(before plugins_loaded fires), you can undo them by hooking into plugins_loaded
+at a later priority.
+
+Example — keep WPForms AI active while everything else stays off:
+
+  add_action( 'plugins_loaded', function() {
+      remove_filter( 'wpforms_disable_ai_features', '__return_true' );
+  }, 20 );
+
+Example — keep Jetpack AI active while everything else stays off:
+
+  add_action( 'plugins_loaded', function() {
+      remove_filter( 'jetpack_ai_enabled', '__return_false' );
+  }, 20 );
+
+Add the snippet to your theme's functions.php or a site-specific mu-plugin.
+Priority 20 ensures your code runs after this plugin has already added its filters
+(the file-load phase completes before plugins_loaded at priority 10), so the
+remove_filter call is guaranteed to take effect.
+
+== Screenshots ==
+
+1. The AI Features settings on the Settings > General page — check "Turn off AI features on this site" to disable AI, with an optional toggle to also hide the Connectors page from the Settings menu.
+2. The plugin entry on the Plugins page with the Settings quick-link for fast access to the AI toggle.
+
 == Changelog ==
+
+= 1.0.0 =
+* Added: FAQ documenting all plugin-specific filters applied when AI is disabled (jetpack_ai_enabled, wpforms_disable_ai_features, wp_supports_ai)
+* Added: FAQ with code examples showing how to selectively re-enable one plugin's AI via remove_filter on plugins_loaded priority 20
+* Bumped version to 1.0.0 — stable, production-ready release
 
 = 0.0.9 =
 * Fixed: Exclude dev-only files from WordPress.org release (bin/, tests/, composer.json, phpcs.xml.dist, phpunit.xml.dist, DEPLOYMENT_GUIDE.md, README.md) via .distignore
