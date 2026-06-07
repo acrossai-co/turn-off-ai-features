@@ -22,8 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Defines WP_AI_SUPPORT as false at load time when the option is enabled.
  * WP core checks this constant before the wp_supports_ai filter.
  */
-if ( '1' === get_option( 'toaif_disable_ai', '0' ) && ! defined( 'WP_AI_SUPPORT' ) ) {
-	define( 'WP_AI_SUPPORT', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+if ( '1' === get_option( 'toaif_disable_ai', '0' ) ) {
+
+	if ( ! defined( 'WP_AI_SUPPORT' ) ) {
+		define( 'WP_AI_SUPPORT', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+	}
+
+	add_filter( 'jetpack_ai_enabled', '__return_false' );
+	add_filter( 'wpforms_disable_ai_features', '__return_true' );
 }
 
 /**
